@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ChaosPicture.Properties
+namespace NoiseGenerator.Properties
 {
 
 

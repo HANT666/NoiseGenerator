@@ -23,7 +23,7 @@ namespace NoiseGenerator
 
             size = 257;
             freq = 20;
-            octaves = 0;
+            octaves = 2;
 
             octavesPerlin = 5;
             persistence = 8.0f;
@@ -31,6 +31,8 @@ namespace NoiseGenerator
             textBox1.Text = Convert.ToString(min);
             textBox2.Text = Convert.ToString(max);
             textBox3.Text = Convert.ToString(freq);
+
+            textBox4.Text = Convert.ToString(octaves);
 
             textBox5.Text = Convert.ToString(octavesPerlin);
             textBox6.Text = Convert.ToString(persistence);
@@ -52,11 +54,36 @@ namespace NoiseGenerator
             // ввод частоты интерполяции
             freq = Int32.Parse(textBox3.Text);
 
+
             // отрисовка интерполяций
-            Draw(noise.Linear_Interpolate1_Float(freq), pictureBox2);
-            Draw(noise.Cos_Interpolate1_Float(freq), pictureBox3);
+            if (checkBox1.Checked)
+            {
+                // ввод количества октав
+                try
+                {
+                    octaves = Int32.Parse(textBox4.Text);
+                }
+                catch (System.FormatException)
+                {
+
+                    //throw;
+                }
+
+                noise.Fractal(octaves);
+                Draw(noise.DataFloatBuff1, pictureBox2);
+                Draw(noise.DataFloatBuff2, pictureBox3);
+            }
+            else
+            {
+                Draw(noise.Linear_Interpolate1_Float(freq), pictureBox2);
+                Draw(noise.Cos_Interpolate1_Float(freq), pictureBox3);
+            }
+            
+            
             //Draw(noise.Random_Interpolate1_Float(freq), pictureBox3);
             button3.Enabled = true;
+
+            textBox8.Text = Convert.ToString(noise.Treshold);
         }
         private void button3_Click(object sender, EventArgs e)
         {
@@ -134,6 +161,14 @@ namespace NoiseGenerator
                 textBox6.Text = "0,5";
                 //throw;
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            noise.Treshold = Int32.Parse(textBox8.Text);
+            
+            Draw(noise.Function1(), pictureBox2);
+            Draw(noise.Function2(), pictureBox3);
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -220,7 +255,6 @@ namespace NoiseGenerator
 
             pictureBox.Image = bitmap;
         }
-        
         
     }
 }

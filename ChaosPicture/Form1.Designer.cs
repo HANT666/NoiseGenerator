@@ -52,6 +52,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -270,7 +273,7 @@
             this.groupBox1.Size = new System.Drawing.Size(257, 79);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.groupBox1.Text = "Perlin noise";
             // 
             // groupBox2
             // 
@@ -284,13 +287,42 @@
             this.groupBox2.Size = new System.Drawing.Size(257, 79);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "groupBox2";
+            this.groupBox2.Text = "Normal noise";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(626, 305);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(88, 37);
+            this.button6.TabIndex = 15;
+            this.button6.Text = "Accept treshold";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(626, 349);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(88, 20);
+            this.textBox8.TabIndex = 16;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(576, 352);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 26);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "treshold\r\n(0-255)";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 487);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.textBox8);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.textBox4);
@@ -345,6 +377,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.Label label9;
     }
 }
 

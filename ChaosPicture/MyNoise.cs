@@ -9,7 +9,48 @@ namespace NoiseGenerator
         int[,] data;
         float[,] dataFloat, dataFloatBuff1, dataFloatBuff2;
 
+        float treshold = 130;
+
         Random randomValue;
+
+        public float Treshold
+        {
+            get
+            {
+                return treshold;
+            }
+
+            set
+            {
+                treshold = value;
+            }
+        }
+
+        public float[,] DataFloatBuff1
+        {
+            get
+            {
+                return dataFloatBuff1;
+            }
+
+            set
+            {
+                dataFloatBuff1 = value;
+            }
+        }
+
+        public float[,] DataFloatBuff2
+        {
+            get
+            {
+                return dataFloatBuff2;
+            }
+
+            set
+            {
+                dataFloatBuff2 = value;
+            }
+        }
 
         public MyNoise(int size, int min, int max)
         {
@@ -224,15 +265,15 @@ namespace NoiseGenerator
             // находим координаты посередине
             int newX = Mid(x1, x2);
             int newY = Mid(y1, y2);
-            
+
             if (newX == x1 && newY == y1 || newX == x2 && newY == y2)
                 return;
 
-            dataFloatBuff1[newX, y1] = (dataFloatBuff1[x1, y1] + dataFloatBuff1[x2, y1]) / 2.0f;
-            dataFloatBuff1[newX, y2] = (dataFloatBuff1[x1, y2] + dataFloatBuff1[x2, y2]) / 2.0f;
-            dataFloatBuff1[x1, newY] = (dataFloatBuff1[x1, y1] + dataFloatBuff1[x1, y2]) / 2.0f;
-            dataFloatBuff1[x2, newY] = (dataFloatBuff1[x2, y1] + dataFloatBuff1[x2, y2]) / 2.0f;
-            dataFloatBuff1[newX, newY] = (dataFloatBuff1[newX, y1] + dataFloatBuff1[newX, y2]) / 2.0f;
+            DataFloatBuff1[newX, y1] = (DataFloatBuff1[x1, y1] + DataFloatBuff1[x2, y1]) / 2.0f;
+            DataFloatBuff1[newX, y2] = (DataFloatBuff1[x1, y2] + DataFloatBuff1[x2, y2]) / 2.0f;
+            DataFloatBuff1[x1, newY] = (DataFloatBuff1[x1, y1] + DataFloatBuff1[x1, y2]) / 2.0f;
+            DataFloatBuff1[x2, newY] = (DataFloatBuff1[x2, y1] + DataFloatBuff1[x2, y2]) / 2.0f;
+            DataFloatBuff1[newX, newY] = (DataFloatBuff1[newX, y1] + DataFloatBuff1[newX, y2]) / 2.0f;
 
             // рекурсивный вызов для прохода всех четвертей
             Linear_Interpolate_Float(x1, y1, newX, newY);
@@ -253,7 +294,7 @@ namespace NoiseGenerator
                 }
             }*/
 
-            dataFloatBuff1 = (float[,])dataFloat.Clone();
+            DataFloatBuff1 = (float[,])dataFloat.Clone();
 
             float g = (size - 1) / (float)freq;
 
@@ -264,23 +305,23 @@ namespace NoiseGenerator
                     Linear_Interpolate_Float((int)Math.Round(j * g), (int)Math.Round(i * g), (int)Math.Round((j + 1) * g), (int)Math.Round((i + 1) * g));
                 }
             }
-            return dataFloatBuff1;
+            return DataFloatBuff1;
         }
 
         public void Cos_Interpolate_Float(int x1, int y1, int x2, int y2)
         {
             double ft;
             float f;
-            
+
             for (int x = x1 + 1; x < x2; x++)
             {
                 ft = (((float)x - x1) / (x2 - x1) * Math.PI);
                 f = (float)((1 - Math.Cos(ft)) * 0.5);
-                dataFloatBuff2[x, y1] = dataFloatBuff2[x1, y1] * (1.0f - f) + dataFloatBuff2[x2, y1] * f;
+                DataFloatBuff2[x, y1] = DataFloatBuff2[x1, y1] * (1.0f - f) + DataFloatBuff2[x2, y1] * f;
 
                 ft = (((float)x - x1) / (x2 - x1) * Math.PI);
                 f = (float)((1 - Math.Cos(ft)) * 0.5);
-                dataFloatBuff2[x, y2] = dataFloatBuff2[x1, y2] * (1.0f - f) + dataFloatBuff2[x2, y2] * f;
+                DataFloatBuff2[x, y2] = DataFloatBuff2[x1, y2] * (1.0f - f) + DataFloatBuff2[x2, y2] * f;
             }
 
             for (int x = x1; x <= x2; x++)
@@ -289,7 +330,7 @@ namespace NoiseGenerator
                 {
                     ft = (((float)y - y1) / (y2 - y1) * Math.PI);
                     f = (float)((1 - Math.Cos(ft)) * 0.5);
-                    dataFloatBuff2[x, y] = dataFloatBuff2[x, y1] * (1 - f) + dataFloatBuff2[x, y2] * f;
+                    DataFloatBuff2[x, y] = DataFloatBuff2[x, y1] * (1 - f) + DataFloatBuff2[x, y2] * f;
                 }
             }
 
@@ -307,7 +348,7 @@ namespace NoiseGenerator
                 }
             }*/
 
-            dataFloatBuff2 = (float[,])dataFloat.Clone();
+            DataFloatBuff2 = (float[,])dataFloat.Clone();
 
             float g = (size - 1) / (float)freq;
 
@@ -318,7 +359,7 @@ namespace NoiseGenerator
                     Cos_Interpolate_Float((int)Math.Round(j * g), (int)Math.Round(i * g), (int)Math.Round((j + 1) * g), (int)Math.Round((i + 1) * g));
                 }
             }
-            return dataFloatBuff2;
+            return DataFloatBuff2;
         }
 
         public void Perlin_Interpolate1_Float(int freq)
@@ -354,11 +395,11 @@ namespace NoiseGenerator
             if (newX == x1 && newY == y1 || newX == x2 && newY == y2)
                 return;
 
-            dataFloatBuff1[newX, y1] = randomValue.Next((int)Math.Min(dataFloatBuff1[x1, y1], dataFloatBuff1[x2, y1]), (int)Math.Max(dataFloatBuff1[x1, y1], dataFloatBuff1[x2, y1]));
-            dataFloatBuff1[newX, y2] = randomValue.Next((int)Math.Min(dataFloatBuff1[x1, y2], dataFloatBuff1[x2, y2]), (int)Math.Max(dataFloatBuff1[x1, y2], dataFloatBuff1[x2, y2]));
-            dataFloatBuff1[x1, newY] = randomValue.Next((int)Math.Min(dataFloatBuff1[x1, y1], dataFloatBuff1[x1, y2]), (int)Math.Max(dataFloatBuff1[x1, y1], dataFloatBuff1[x1, y2]));
-            dataFloatBuff1[x2, newY] = randomValue.Next((int)Math.Min(dataFloatBuff1[x2, y1], dataFloatBuff1[x2, y2]), (int)Math.Max(dataFloatBuff1[x2, y1], dataFloatBuff1[x2, y2]));
-            dataFloatBuff1[newX, newY] = randomValue.Next((int)Math.Min(dataFloatBuff1[newX, y1], dataFloatBuff1[newX, y2]), (int)Math.Max(dataFloatBuff1[newX, y1], dataFloatBuff1[newX, y2]));
+            DataFloatBuff1[newX, y1] = randomValue.Next((int)Math.Min(DataFloatBuff1[x1, y1], DataFloatBuff1[x2, y1]), (int)Math.Max(DataFloatBuff1[x1, y1], DataFloatBuff1[x2, y1]));
+            DataFloatBuff1[newX, y2] = randomValue.Next((int)Math.Min(DataFloatBuff1[x1, y2], DataFloatBuff1[x2, y2]), (int)Math.Max(DataFloatBuff1[x1, y2], DataFloatBuff1[x2, y2]));
+            DataFloatBuff1[x1, newY] = randomValue.Next((int)Math.Min(DataFloatBuff1[x1, y1], DataFloatBuff1[x1, y2]), (int)Math.Max(DataFloatBuff1[x1, y1], DataFloatBuff1[x1, y2]));
+            DataFloatBuff1[x2, newY] = randomValue.Next((int)Math.Min(DataFloatBuff1[x2, y1], DataFloatBuff1[x2, y2]), (int)Math.Max(DataFloatBuff1[x2, y1], DataFloatBuff1[x2, y2]));
+            DataFloatBuff1[newX, newY] = randomValue.Next((int)Math.Min(DataFloatBuff1[newX, y1], DataFloatBuff1[newX, y2]), (int)Math.Max(DataFloatBuff1[newX, y1], DataFloatBuff1[newX, y2]));
 
             Random_Interpolate_Float(x1, y1, newX, newY);
             Random_Interpolate_Float(newX, y1, x2, newY);
@@ -368,13 +409,13 @@ namespace NoiseGenerator
 
         public float[,] Random_Interpolate1_Float(int freq)
         {
-            dataFloatBuff1 = new float[size, size];
+            DataFloatBuff1 = new float[size, size];
 
             for (int y = 0; y < size; y++)
             {
                 for (int x = 0; x < size; x++)
                 {
-                    dataFloatBuff1[x, y] = this.dataFloat[x, y];
+                    DataFloatBuff1[x, y] = this.dataFloat[x, y];
                 }
             }
             float g = (size - 1) / (float)freq;
@@ -386,7 +427,7 @@ namespace NoiseGenerator
                     Random_Interpolate_Float((int)Math.Round(j * g), (int)Math.Round(i * g), (int)Math.Round((j + 1) * g), (int)Math.Round((i + 1) * g));
                 }
             }
-            return dataFloatBuff1;
+            return DataFloatBuff1;
         }
 
         // сглаживание для первого интерполированного массива
@@ -397,14 +438,14 @@ namespace NoiseGenerator
             {
                 for (int x = 1; x < size - 1; x++)
                 {
-                    corners = (dataFloatBuff1[x - 1, y - 1] + dataFloatBuff1[x + 1, y - 1] + dataFloatBuff1[x - 1, y + 1] + dataFloatBuff1[x + 1, y + 1]) / 16;
-                    sides = (dataFloatBuff1[x, y - 1] + dataFloatBuff1[x + 1, y] + dataFloatBuff1[x, y + 1] + dataFloatBuff1[x - 1, y]) / 8;
-                    center = dataFloatBuff1[x, y] / 4;
-                    dataFloatBuff1[x, y] = corners + sides + center;
+                    corners = (DataFloatBuff1[x - 1, y - 1] + DataFloatBuff1[x + 1, y - 1] + DataFloatBuff1[x - 1, y + 1] + DataFloatBuff1[x + 1, y + 1]) / 16;
+                    sides = (DataFloatBuff1[x, y - 1] + DataFloatBuff1[x + 1, y] + DataFloatBuff1[x, y + 1] + DataFloatBuff1[x - 1, y]) / 8;
+                    center = DataFloatBuff1[x, y] / 4;
+                    DataFloatBuff1[x, y] = corners + sides + center;
                 }
             }
 
-            return dataFloatBuff1;
+            return DataFloatBuff1;
         }
 
         // сглаживание для второго интерполированного массива
@@ -415,34 +456,104 @@ namespace NoiseGenerator
             {
                 for (int x = 1; x < size - 1; x++)
                 {
-                    corners = (dataFloatBuff2[x - 1, y - 1] + dataFloatBuff2[x + 1, y - 1] + dataFloatBuff2[x - 1, y + 1] + dataFloatBuff2[x + 1, y + 1]) / 16;
-                    sides = (dataFloatBuff2[x, y - 1] + dataFloatBuff2[x + 1, y] + dataFloatBuff2[x, y + 1] + dataFloatBuff2[x - 1, y]) / 8;
-                    center = dataFloatBuff2[x, y] / 4;
-                    dataFloatBuff2[x, y] = corners + sides + center;
+                    corners = (DataFloatBuff2[x - 1, y - 1] + DataFloatBuff2[x + 1, y - 1] + DataFloatBuff2[x - 1, y + 1] + DataFloatBuff2[x + 1, y + 1]) / 16;
+                    sides = (DataFloatBuff2[x, y - 1] + DataFloatBuff2[x + 1, y] + DataFloatBuff2[x, y + 1] + DataFloatBuff2[x - 1, y]) / 8;
+                    center = DataFloatBuff2[x, y] / 4;
+                    DataFloatBuff2[x, y] = corners + sides + center;
                 }
             }
 
-            return dataFloatBuff2;
+            return DataFloatBuff2;
         }
 
-        public float[,] FractalLinear(int octaves)
+        public void Fractal(int octaves)
         {
-            float[,] data1 = new float[size,size];
-            float[,] data2 = new float[size, size];
-
-            //data1 = Linear_Interpolate1_Float(1);
-            //if (octaves == 2)
-                //;
-            /*for (int i = 1; i < octaves; i++)
+            DataFloatBuff1 = new float[size, size];
+            DataFloatBuff2 = new float[size, size];
+            
+            if (octaves == 1)
             {
-                data1 = Linear_Interpolate1_Float(i + 1);
-            }*/
-            return dataFloat;
+                DataFloatBuff1 = SumArray(DataFloatBuff1, Linear_Interpolate1_Float(2));
+                DataFloatBuff2 = SumArray(DataFloatBuff2, Cos_Interpolate1_Float(2));
+
+                return;
+            }
+
+            for (int i = 0; i < octaves; i++)
+            {
+                DataFloatBuff1 = SumArray( DataFloatBuff1, Linear_Interpolate1_Float( (int)Math.Pow(2, (i + 1)) ) );
+                DataFloatBuff2 = SumArray(DataFloatBuff2,     Cos_Interpolate1_Float( (int)Math.Pow(2, (i + 1)) ) );
+
+                /*DataFloatBuff1 = SumArray(DataFloatBuff1, Linear_Interpolate1_Float(i + 1));
+                DataFloatBuff2 = SumArray(DataFloatBuff2, Cos_Interpolate1_Float(i + 1));*/
+            }
+            int g = 6;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    DataFloatBuff1[x, y] /= octaves;
+                    DataFloatBuff2[x, y] /= octaves;
+                }
+            }
+            
+            //return dataFloatBuff1;
         }
 
-        public void SumArray()
+        public float[,] SumArray(float[,] data1, float[,] data2)
         {
+            float[,] data0 = new float[size, size];
 
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+
+                    data0[x, y] = data1[x, y] + data2[x, y];
+                }
+            }
+            
+            return data0;
+        }
+
+        public float[,] Function1()
+        {
+            float[,] data = (float[,])DataFloatBuff1.Clone();
+
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    if (data[x, y] < Treshold)
+                        data[x, y] = 0;
+                    else
+                        data[x, y] = 255;
+                }
+            }
+
+
+            return data;
+        }
+
+        public float[,] Function2()
+        {
+            float[,] data = (float[,])DataFloatBuff2.Clone();
+
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    if (data[x, y] < Treshold)
+                        data[x, y] = 0;
+                    else
+                        data[x, y] = 255;
+                }
+            }
+
+
+            return data;
         }
     }
 }
